@@ -188,7 +188,199 @@ struct Button {
 
 User currentUser;
 
+void RegisterForm()
+{
+    int key = 0;
+    activeBox = SCHOOL_ID;
 
+    while (!WindowShouldClose())
+    {
+        key = GetCharPressed();
+
+        if (isMouseOverBox(registrationForm.firstNameBox.box))
+        {
+            activeBox = FIRST_NAME;
+            while (key > 0)
+            {
+
+                if ((key >= 32) && (key <= 125) && (registrationForm.firstNameBox.charCount < 15))
+                {
+
+                    registrationForm.firstNameBox.input[registrationForm.firstNameBox.charCount] = (char)key;
+                    registrationForm.firstNameBox.input[registrationForm.firstNameBox.charCount + 1] = '\0';
+                    registrationForm.firstNameBox.charCount++;
+
+                }
+                key = GetCharPressed();
+            }
+        }
+
+        if (isMouseOverBox(registrationForm.lastNameBox.box))
+        {
+            activeBox = LAST_NAME;
+            while (key > 0)
+            {
+                if ((key >= 32) && (key <= 125) && (registrationForm.lastNameBox.charCount < 15))
+                {
+                    registrationForm.lastNameBox.input[registrationForm.lastNameBox.charCount] = (char)key;
+                    registrationForm.lastNameBox.input[registrationForm.lastNameBox.charCount + 1] = '\0';
+                    registrationForm.lastNameBox.charCount++;
+                }
+                key = GetCharPressed();
+            }
+        }
+
+        if (isMouseOverBox(registrationForm.idBox.box))
+        {
+            activeBox = SCHOOL_ID;
+            while (key > 0)
+            {
+                if ((key >= 32) && (key <= 125) && (registrationForm.idBox.charCount < 15))
+                {
+                    registrationForm.idBox.input[registrationForm.idBox.charCount] = (char)key;
+                    registrationForm.idBox.input[registrationForm.idBox.charCount + 1] = '\0';
+                    registrationForm.idBox.charCount++;
+                }
+                key = GetCharPressed();
+            }
+        }
+
+        if (isMouseOverBox(registrationForm.passwordBox.box))
+        {
+            activeBox = PASSWORD;
+            while (key > 0)
+            {
+                if ((key >= 32) && (key <= 125) && (registrationForm.passwordBox.charCount < 15))
+                {
+                    registrationForm.passwordBox.input[registrationForm.passwordBox.charCount] = (char)key;
+                    registrationForm.passwordBox.input[registrationForm.passwordBox.charCount + 1] = '\0';
+                    registrationForm.passwordBox.charCount++;
+                }
+                key = GetCharPressed();
+            }
+        }
+
+        if (isMouseOverBox(registrationForm.confirmPasswordBox.box))
+        {
+            activeBox = CONFIRM_PASSWORD;
+            while (key > 0)
+            {
+                if ((key >= 32) && (key <= 125) && (registrationForm.confirmPasswordBox.charCount < 15))
+                {
+                    registrationForm.confirmPasswordBox.input[registrationForm.confirmPasswordBox.charCount] = (char)key;
+                    registrationForm.confirmPasswordBox.input[registrationForm.confirmPasswordBox.charCount + 1] = '\0';
+                    registrationForm.confirmPasswordBox.charCount++;
+                }
+                key = GetCharPressed();
+            }
+        }
+
+        BeginDrawing();
+        ClearBackground(WHITE);
+
+        DrawText("Register", GetScreenWidth() / 2 - MeasureText("Register", 30) / 2, 50, 30, BLACK);
+        drawTextBox(registrationForm.firstNameBox, "First Name:", true);
+        drawTextBox(registrationForm.lastNameBox, "Last Name:", true);
+        drawTextBox(registrationForm.idBox, "Student ID:", true);
+        drawTextBox(registrationForm.passwordBox, "Password:", false);
+        drawTextBox(registrationForm.confirmPasswordBox, "Confirm Password:", false);
+
+        registrationForm.registerButton.x = GetScreenWidth() / 2 - registrationForm.registerButton.width / 2;
+        registrationForm.registerButton.y = GetScreenHeight() / 2 + 120;
+
+
+        if (IsKeyPressed(KEY_BACKSPACE)) {
+            switch (activeBox) {
+            case FIRST_NAME:
+                if (registrationForm.firstNameBox.charCount > 0) {
+                    registrationForm.firstNameBox.input[registrationForm.firstNameBox.charCount - 1] = '\0';
+                    registrationForm.firstNameBox.charCount--;
+                }
+                break;
+            case LAST_NAME:
+                if (registrationForm.lastNameBox.charCount > 0) {
+                    registrationForm.lastNameBox.input[registrationForm.lastNameBox.charCount - 1] = '\0';
+                    registrationForm.lastNameBox.charCount--;
+                }
+                break;
+            case SCHOOL_ID:
+                if (registrationForm.idBox.charCount > 0) {
+                    registrationForm.idBox.input[registrationForm.idBox.charCount - 1] = '\0';
+                    registrationForm.idBox.charCount--;
+                }
+                break;
+            case PASSWORD:
+                if (registrationForm.passwordBox.charCount > 0) {
+                    registrationForm.passwordBox.input[registrationForm.passwordBox.charCount - 1] = '\0';
+                    registrationForm.passwordBox.charCount--;
+                }
+                break;
+            case CONFIRM_PASSWORD:
+                if (registrationForm.confirmPasswordBox.charCount > 0) {
+                    registrationForm.confirmPasswordBox.input[registrationForm.confirmPasswordBox.charCount - 1] = '\0';
+                    registrationForm.confirmPasswordBox.charCount--;
+                }
+                break;
+            }
+        }
+
+        DrawText(checkRequirements(registrationForm.passwordBox.input) ? "The password must contain: a special character, a capital letter, and be at least 6 characters long." : "The password must contain: a special character, a capital letter, and be at least 6 characters long.", GetScreenWidth() / 2 - MeasureText("Register", 20) / 2 - 260, 520, 13, checkRequirements(registrationForm.passwordBox.input) ? GREEN : RED);
+
+        if (isMouseOverBox(registrationForm.registerButton))
+        {
+            DrawRectangleRec(registrationForm.registerButton, BLUE);
+        }
+        else
+        {
+            DrawRectangleRec(registrationForm.registerButton, DARKBLUE);
+        }
+        DrawText("Register", registrationForm.registerButton.x + 60, registrationForm.registerButton.y + 10, 20, WHITE);
+
+        if (isMouseOverBox(registrationForm.registerButton) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
+        {
+            if (strcmp(registrationForm.passwordBox.input, registrationForm.confirmPasswordBox.input) == 0 && checkRequirements(registrationForm.passwordBox.input)) {
+
+                if (strlen(registrationForm.firstNameBox.input) > 0 && strlen(registrationForm.lastNameBox.input) > 0) {
+
+                    saveUserData(registrationForm.firstNameBox.input, registrationForm.lastNameBox.input, registrationForm.idBox.input, registrationForm.passwordBox.input);
+
+                    registrationForm.firstNameBox.charCount = 0;
+                    registrationForm.lastNameBox.charCount = 0;
+                    registrationForm.idBox.charCount = 0;
+                    registrationForm.passwordBox.charCount = 0;
+                    registrationForm.confirmPasswordBox.charCount = 0;
+
+                    memset(registrationForm.firstNameBox.input, 0, sizeof(registrationForm.firstNameBox.input));
+                    memset(registrationForm.lastNameBox.input, 0, sizeof(registrationForm.lastNameBox.input));
+                    memset(registrationForm.idBox.input, 0, sizeof(registrationForm.idBox.input));
+                    memset(registrationForm.passwordBox.input, 0, sizeof(registrationForm.passwordBox.input));
+                    memset(registrationForm.confirmPasswordBox.input, 0, sizeof(registrationForm.confirmPasswordBox.input));
+
+                    registrationFormActive = false;
+                    break;
+                }
+            }
+        }
+
+        if (CheckCollisionPointRec(GetMousePosition(), registrationForm.registerButton))
+        {
+            DrawRectangleRec(registrationForm.registerButton, BLUE);
+            DrawText("Register", registrationForm.registerButton.x + 60, registrationForm.registerButton.y + 10, 20, WHITE);
+            if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
+            {
+                const char* firstName = "";
+                const char* lastName = "";
+                const char* studentID = "";
+                const char* password = "";
+
+                saveUserData(firstName, lastName, studentID, password);
+                //draw student 
+            }
+        }
+
+        EndDrawing();
+    }
+}
 
 void DrawMainMenu()
 {
@@ -316,7 +508,7 @@ void DrawMainMenu()
         {
             if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
             {
-                //RegisterForm();
+                RegisterForm();
             }
         }
         DrawLine(280, mainMenu.createAccountButton.y - 10, 520, mainMenu.createAccountButton.y - 10, BLUE);
