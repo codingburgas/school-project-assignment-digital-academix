@@ -23,3 +23,61 @@ Last Name: Vichev
 Student ID: vdv
 Password: Vicho*1
 --------------------------
+First Name: 
+Last Name: 
+Student ID: 
+Password: 
+--------------------------
+First Name: Ne e Vicho
+Last Name: Vichev
+Student ID: sss
+Password: Vichev*1
+--------------------------
+First Name: vi
+Last Name: vichev
+Student ID: VDVichev21
+Password: Vichev1!
+Type: ô
+--------------------------
+First Name: Gospodin
+Last Name: Vicho
+Student ID: vdv
+Password: Neznam1!
+Type: ¼
+--------------------------
+First Name: proba
+Last Name: pomosht
+Student ID: da
+Password: Bqndov123$
+Type: ô
+--------------------------
+First Name: sad
+Last Name: asd
+Student ID: asd
+Password: Zabravih1!
+Type: ô¼È(
+--------------------------
+First Name: asd
+Last Name: ads
+Student ID: ads
+Password: Tuksum1!
+Type: 0
+--------------------------
+First Name: gospodin
+Last Name: ne znam
+Student ID: dasd
+Password: Mojebi1!
+Type: 1
+--------------------------
+First Name: az
+Last Name: az
+Student ID: az
+Password: Vicho1!
+Type: 0
+--------------------------
+First Name: vicho
+Last Name: vicho
+Student ID: vicho
+Password: Vicho1!
+Type: 1
+--------------------------

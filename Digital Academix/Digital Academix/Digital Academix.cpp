@@ -34,6 +34,7 @@ public:
     CREDENTIAL_BOX idBox{ "", 0, {700, 260, 200, 30}, 0 };
     CREDENTIAL_BOX passwordBox{ "", 0, {700, 320, 200, 30}, 0 };
     CREDENTIAL_BOX confirmPasswordBox{ "", 0, {700, 380, 200, 30}, 0 };
+    CREDENTIAL_BOX items{ "", 0, {700, 380, 200, 30}, 0 };
     Rectangle registerButton{ 700, 700, 200, 40 };
 };
 
@@ -148,7 +149,7 @@ bool checkRequirements(const char* str) {
     return hasCapital && hasLower && hasDigit && hasSpecial && (strlen(str) >= 6);
 }
 
-void saveUserData(const char* firstName, const char* lastName, const char* schoolID, const char* password)
+void saveUserData(const char* firstName, const char* lastName, const char* schoolID, const char* password, std::string items)
 {
     std::ofstream file("users.txt", std::ios::app);
     if (file.is_open()) {
@@ -156,7 +157,8 @@ void saveUserData(const char* firstName, const char* lastName, const char* schoo
         file << "Last Name: " << lastName << std::endl;
         file << "Student ID: " << schoolID << std::endl;
         file << "Password: " << password << std::endl;
-        file << "--------------------------" << std::endl;  // Separator for each user
+        file << "Type: " << selectedItem << std::endl;
+        file << "--------------------------" << std::endl;  
         file.close();
     }
     else {
@@ -285,12 +287,10 @@ void RegisterForm()
         DrawRectangleRec(dropdownRect, WHITE);
         DrawRectangleLines(dropdownRect.x, dropdownRect.y, dropdownRect.width, dropdownRect.height, BLACK);
 
-        // Draw selected item
         if (selectedItem != -1) {
             DrawText(items[selectedItem], dropdownRect.x + 10, dropdownRect.y + 8, 20, BLACK);
         }
 
-        // Draw dropdown items if active
         if (dropdownActive) {
             for (int i = 0; i < 2; i++) {
                 Rectangle itemRect = { dropdownRect.x, dropdownRect.y + dropdownRect.height + 2 + 30 * i, dropdownRect.width, 30 };
@@ -305,7 +305,6 @@ void RegisterForm()
             }
         }
 
-        // Toggle dropdown when clicking
         if (CheckCollisionPointRec(GetMousePosition(), dropdownRect) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
             dropdownActive = !dropdownActive;
         }
@@ -373,7 +372,7 @@ void RegisterForm()
 
                 if (strlen(registrationForm.firstNameBox.input) > 0 && strlen(registrationForm.lastNameBox.input) > 0) {
 
-                    saveUserData(registrationForm.firstNameBox.input, registrationForm.lastNameBox.input, registrationForm.idBox.input, registrationForm.passwordBox.input);
+                    saveUserData(registrationForm.firstNameBox.input, registrationForm.lastNameBox.input, registrationForm.idBox.input, registrationForm.passwordBox.input, registrationForm.items.input);
 
                     registrationForm.firstNameBox.charCount = 0;
                     registrationForm.lastNameBox.charCount = 0;
@@ -403,8 +402,9 @@ void RegisterForm()
                 const char* lastName = "";
                 const char* studentID = "";
                 const char* password = "";
+                std::string items = "";
 
-                saveUserData(firstName, lastName, studentID, password);
+                saveUserData(firstName, lastName, studentID, password, items);
                 //draw student 
             }
         }
