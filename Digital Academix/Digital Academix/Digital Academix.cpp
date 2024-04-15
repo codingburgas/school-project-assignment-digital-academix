@@ -42,7 +42,7 @@ CREDENTIAL_BOX lastNameBox{ "", 0, {GetScreenWidth() / 2 + 300, 200, 200, 30}, 0
 CREDENTIAL_BOX idBox{ "", 0, {GetScreenWidth() / 2 + 300, 260, 200, 30}, 0 };
 CREDENTIAL_BOX passwordBox{ "", 0, {GetScreenWidth() / 2 + 300, 320, 200, 30}, 0 };
 CREDENTIAL_BOX confirmPasswordBox{ "", 0, {GetScreenWidth() / 2 + 300, 380, 200, 30}, 0 };
-Rectangle registerButton{ GetScreenWidth() / 2 + 300, 700, 200, 40 };
+Rectangle registerButton{ GetScreenWidth() / 2 + 300, 100, 200, 40 };
 
 enum ActiveBox {
     FIRST_NAME,
@@ -69,8 +69,13 @@ REGISTRATION_FORM registrationForm =
     { "", 0, {GetScreenWidth() / 2 + 300, 260, 200, 30}, 0 },
     { "", 0, {GetScreenWidth() / 2 + 300, 320, 200, 30}, 0 },
     { "", 0, {GetScreenWidth() / 2 + 300, 380, 200, 30}, 0 },
-    { GetScreenWidth() / 2 + 500, 600, 200, 40 }
+    { GetScreenWidth() / 2 + 500, 700, 200, 40 }
 };
+
+Rectangle dropdownRect = { 300, 430, 200, 30 };
+int selectedItem = -1;
+const char* items[2] = { "Student", "Teacher" };
+bool dropdownActive = false;
 
 bool isMouseOverBox(Rectangle box)
 {
@@ -277,7 +282,33 @@ void RegisterForm()
 
         BeginDrawing();
         ClearBackground(WHITE);
+        DrawRectangleRec(dropdownRect, WHITE);
+        DrawRectangleLines(dropdownRect.x, dropdownRect.y, dropdownRect.width, dropdownRect.height, BLACK);
 
+        // Draw selected item
+        if (selectedItem != -1) {
+            DrawText(items[selectedItem], dropdownRect.x + 10, dropdownRect.y + 8, 20, BLACK);
+        }
+
+        // Draw dropdown items if active
+        if (dropdownActive) {
+            for (int i = 0; i < 2; i++) {
+                Rectangle itemRect = { dropdownRect.x, dropdownRect.y + dropdownRect.height + 2 + 30 * i, dropdownRect.width, 30 };
+                DrawRectangleRec(itemRect, WHITE);
+                DrawRectangleLines(itemRect.x, itemRect.y, itemRect.width, itemRect.height, BLACK);
+                DrawText(items[i], itemRect.x + 10, itemRect.y + 8, 20, BLACK);
+
+                if (CheckCollisionPointRec(GetMousePosition(), itemRect) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                    selectedItem = i;
+                    dropdownActive = false;
+                }
+            }
+        }
+
+        // Toggle dropdown when clicking
+        if (CheckCollisionPointRec(GetMousePosition(), dropdownRect) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+            dropdownActive = !dropdownActive;
+        }
         DrawText("Register", GetScreenWidth() / 2 - MeasureText("Register", 30) / 2, 50, 30, BLACK);
         drawTextBox(registrationForm.firstNameBox, "First Name:", true);
         drawTextBox(registrationForm.lastNameBox, "Last Name:", true);
@@ -286,7 +317,7 @@ void RegisterForm()
         drawTextBox(registrationForm.confirmPasswordBox, "Confirm Password:", false);
 
         registrationForm.registerButton.x = GetScreenWidth() / 2 - registrationForm.registerButton.width / 2;
-        registrationForm.registerButton.y = GetScreenHeight() / 2 + 120;
+        registrationForm.registerButton.y = GetScreenHeight() / 2 + 220;
 
 
         if (IsKeyPressed(KEY_BACKSPACE)) {
@@ -324,7 +355,7 @@ void RegisterForm()
             }
         }
 
-        DrawText(checkRequirements(registrationForm.passwordBox.input) ? "The password must contain: a special character, a capital letter, and be at least 6 characters long." : "The password must contain: a special character, a capital letter, and be at least 6 characters long.", GetScreenWidth() / 2 - MeasureText("Register", 20) / 2 - 260, 520, 13, checkRequirements(registrationForm.passwordBox.input) ? GREEN : RED);
+        DrawText(checkRequirements(registrationForm.passwordBox.input) ? "The password must contain: a special character, a capital letter, and be at least 6 characters long." : "The password must contain: a special character, a capital letter, and be at least 6 characters long.", GetScreenWidth() / 2 - MeasureText("Register", 20) / 2 - 260, 570, 13, checkRequirements(registrationForm.passwordBox.input) ? GREEN : RED);
 
         if (isMouseOverBox(registrationForm.registerButton))
         {
