@@ -168,12 +168,12 @@ private:
 };
 
 
-bool checkExistingAccount(const char* username, const char* password)
+bool checkAccount(const char* username, const char* password)
 {
     std::ifstream file("users.txt");
     std::string line;
 
-    while (std::getline(file, line))
+    while(true)
     {
         if (line.find("Username: " + std::string(username)) != std::string::npos) {
             std::getline(file, line);
@@ -182,16 +182,6 @@ bool checkExistingAccount(const char* username, const char* password)
     }
 
     return false;
-}
-
-void studentMenu(const char* firstName, const char* lastName) {
-    std::string introMessage = "Hello, ";
-    introMessage += firstName;
-    introMessage += " ";
-    introMessage += lastName;
-    introMessage += "!";
-
-    std::cout << introMessage << std::endl;
 }
 
 userSaver currentUser;
@@ -537,7 +527,7 @@ void DrawMainMenu()
             {
                 const char* username = "";
                 const char* password = "";
-                if (checkExistingAccount(username, password))
+                if (checkAccount(username, password))
                 {
                     studentMenu();
                 }
