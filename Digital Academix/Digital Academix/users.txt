@@ -105,3 +105,33 @@ Username: az
 Password: Boqn123!
 Type: 1
 --------------------------
+First Name: 
+Last Name: 
+Username: 
+Password: 
+Type: -1
+--------------------------
+First Name: 
+Last Name: 
+Username: 
+Password: 
+Type: -1
+--------------------------
+First Name: 
+Last Name: 
+Username: 
+Password: 
+Type: -1
+--------------------------
+First Name: nov
+Last Name: user
+Username: username
+Password: Parola1!
+Type: 0
+--------------------------
+First Name: miro
+Last Name: chobanov
+Username: Miro
+Password: Miro123!
+Type: 0
+--------------------------

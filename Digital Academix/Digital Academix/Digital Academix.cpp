@@ -111,16 +111,6 @@ void drawTextBox(CREDENTIAL_BOX& textBox, const char* label, bool showCharacters
     }
 }
 
-bool isValidNumber(const std::string& input) {
-    try {
-        std::stof(input);
-        return true;
-    }
-    catch (...) {
-        return false;
-    }
-}
-
 
 bool checkRequirements(const char* str) {
     bool hasCapital = false;
@@ -148,30 +138,43 @@ bool checkRequirements(const char* str) {
 
     return hasCapital && hasLower && hasDigit && hasSpecial && (strlen(str) >= 6);
 }
+class userSaver {
+public:
 
-void saveUserData(const char* firstName, const char* lastName, const char* username, const char* password, std::string items)
-{
-    std::ofstream file("users.txt", std::ios::app);
-    if (file.is_open()) {
-        file << "First Name: " << firstName << std::endl;
-        file << "Last Name: " << lastName << std::endl;
-        file << "Username: " << username << std::endl;
-        file << "Password: " << password << std::endl;
-        file << "Type: " << selectedItem << std::endl;
-        file << "--------------------------" << std::endl;  
-        file.close();
+    void saveUserData(const char* firstName, const char* lastName, const char* username, const char* password, std::string items)
+    {
+        std::ofstream file("users.txt", std::ios::app);
+        if (file.is_open()) {
+            file << "First Name: " << firstName << std::endl;
+            file << "Last Name: " << lastName << std::endl;
+            file << "Username: " << username << std::endl;
+            file << "Password: " << password << std::endl;
+            file << "Type: " << selectedItem << std::endl;
+            file << "--------------------------" << std::endl;
+            file.close();
+        }
+        else {
+            std::cout << "Unable to open file for writing." << std::endl;
+        }
     }
-    else {
-        std::cout << "Unable to open file for writing." << std::endl;
-    }
-}
+
+    const char* firstName;
+    const char* lastName;
+
+private:
+    const char* username;
+    const char* password;
+    std::string items;
+};
+
 
 bool checkExistingAccount(const char* username, const char* password)
 {
     std::ifstream file("users.txt");
     std::string line;
 
-    while (std::getline(file, line)) {
+    while (std::getline(file, line))
+    {
         if (line.find("Username: " + std::string(username)) != std::string::npos) {
             std::getline(file, line);
             return line.find("Password: " + std::string(password)) != std::string::npos;
@@ -181,19 +184,31 @@ bool checkExistingAccount(const char* username, const char* password)
     return false;
 }
 
+void studentMenu(const char* firstName, const char* lastName) {
+    std::string introMessage = "Hello, ";
+    introMessage += firstName;
+    introMessage += " ";
+    introMessage += lastName;
+    introMessage += "!";
 
+    std::cout << introMessage << std::endl;
+}
 
-struct TextBox {
-    std::string text;
-    Rectangle rect;
-};
+userSaver currentUser;
 
-struct Button {
-    Rectangle rect;
-    std::string label;
-};
-
-User currentUser;
+void studentMenu()
+{
+    std::string fName = currentUser.firstName;
+    std::string lName = currentUser.lastName;
+    while (!WindowShouldClose())
+    {
+        BeginDrawing();
+        ClearBackground(WHITE);
+        DrawText("Hello", 20, 20, 50, BLACK);
+        EndDrawing();
+    }
+    
+}
 
 void RegisterForm()
 {
@@ -372,7 +387,7 @@ void RegisterForm()
 
                 if (strlen(registrationForm.firstNameBox.input) > 0 && strlen(registrationForm.lastNameBox.input) > 0) {
 
-                    saveUserData(registrationForm.firstNameBox.input, registrationForm.lastNameBox.input, registrationForm.usernameBox.input, registrationForm.passwordBox.input, registrationForm.items.input);
+                    currentUser.saveUserData(registrationForm.firstNameBox.input, registrationForm.lastNameBox.input, registrationForm.usernameBox.input, registrationForm.passwordBox.input, registrationForm.items.input);
 
                     registrationForm.firstNameBox.charCount = 0;
                     registrationForm.lastNameBox.charCount = 0;
@@ -404,7 +419,7 @@ void RegisterForm()
                 const char* password = "";
                 std::string items = "";
 
-                saveUserData(firstName, lastName, USERNAME, password, items);
+                currentUser.saveUserData(firstName, lastName, USERNAME, password, items);
                 //draw student 
             }
         }
@@ -522,17 +537,9 @@ void DrawMainMenu()
             {
                 const char* username = "";
                 const char* password = "";
-
                 if (checkExistingAccount(username, password))
                 {
-                    if (selectedItem == 0)
-                    {
-                        //Student menu
-                    }
-                    else if (selectedItem == 1)
-                    {
-                        //teacher menu
-                    }
+                    studentMenu();
                 }
                 else
                 {
@@ -573,3 +580,4 @@ int main()
         DrawMainMenu();
     }
 }
+
