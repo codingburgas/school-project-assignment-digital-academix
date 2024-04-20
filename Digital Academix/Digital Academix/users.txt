@@ -81,3 +81,27 @@ Student ID: vicho
 Password: Vicho1!
 Type: 1
 --------------------------
+First Name: Boqn
+Last Name: Kyovtorov
+Username: Bobi
+Password: Boqn123!
+Type: 0
+--------------------------
+First Name: 
+Last Name: 
+Username: 
+Password: 
+Type: 1
+--------------------------
+First Name: 
+Last Name: 
+Username: 
+Password: 
+Type: 1
+--------------------------
+First Name: az
+Last Name: az
+Username: az
+Password: Boqn123!
+Type: 1
+--------------------------

@@ -15,7 +15,7 @@ public:
 class MAIN_MENU
 {
 public:
-    CREDENTIAL_BOX idBox;
+    CREDENTIAL_BOX usernameBox;
     CREDENTIAL_BOX passwordBox;
     Rectangle continueButton;
     Rectangle createAccountButton;
@@ -23,7 +23,7 @@ public:
 
 class User {
 public:
-    std::string studentID;
+    std::string Username;
 };
 
 class REGISTRATION_FORM
@@ -31,7 +31,7 @@ class REGISTRATION_FORM
 public:
     CREDENTIAL_BOX firstNameBox{ "", 0, {700, 140, 200, 30}, 0 };
     CREDENTIAL_BOX lastNameBox{ "", 0, {700, 200, 200, 30}, 0 };
-    CREDENTIAL_BOX idBox{ "", 0, {700, 260, 200, 30}, 0 };
+    CREDENTIAL_BOX usernameBox{ "", 0, {700, 260, 200, 30}, 0 };
     CREDENTIAL_BOX passwordBox{ "", 0, {700, 320, 200, 30}, 0 };
     CREDENTIAL_BOX confirmPasswordBox{ "", 0, {700, 380, 200, 30}, 0 };
     CREDENTIAL_BOX items{ "", 0, {700, 380, 200, 30}, 0 };
@@ -40,7 +40,7 @@ public:
 
 CREDENTIAL_BOX firstNameBox{ "", 0, {GetScreenWidth() / 2 + 300, 140, 200, 30}, 0 };
 CREDENTIAL_BOX lastNameBox{ "", 0, {GetScreenWidth() / 2 + 300, 200, 200, 30}, 0 };
-CREDENTIAL_BOX idBox{ "", 0, {GetScreenWidth() / 2 + 300, 260, 200, 30}, 0 };
+CREDENTIAL_BOX usernameBox{ "", 0, {GetScreenWidth() / 2 + 300, 260, 200, 30}, 0 };
 CREDENTIAL_BOX passwordBox{ "", 0, {GetScreenWidth() / 2 + 300, 320, 200, 30}, 0 };
 CREDENTIAL_BOX confirmPasswordBox{ "", 0, {GetScreenWidth() / 2 + 300, 380, 200, 30}, 0 };
 Rectangle registerButton{ GetScreenWidth() / 2 + 300, 100, 200, 40 };
@@ -48,12 +48,12 @@ Rectangle registerButton{ GetScreenWidth() / 2 + 300, 100, 200, 40 };
 enum ActiveBox {
     FIRST_NAME,
     LAST_NAME,
-    SCHOOL_ID,
+    USERNAME,
     PASSWORD,
     CONFIRM_PASSWORD
 };
 
-ActiveBox activeBox = SCHOOL_ID;
+ActiveBox activeBox = USERNAME;
 bool registrationFormActive = false;
 
 MAIN_MENU mainMenu = {
@@ -149,13 +149,13 @@ bool checkRequirements(const char* str) {
     return hasCapital && hasLower && hasDigit && hasSpecial && (strlen(str) >= 6);
 }
 
-void saveUserData(const char* firstName, const char* lastName, const char* schoolID, const char* password, std::string items)
+void saveUserData(const char* firstName, const char* lastName, const char* username, const char* password, std::string items)
 {
     std::ofstream file("users.txt", std::ios::app);
     if (file.is_open()) {
         file << "First Name: " << firstName << std::endl;
         file << "Last Name: " << lastName << std::endl;
-        file << "Student ID: " << schoolID << std::endl;
+        file << "Username: " << username << std::endl;
         file << "Password: " << password << std::endl;
         file << "Type: " << selectedItem << std::endl;
         file << "--------------------------" << std::endl;  
@@ -166,13 +166,13 @@ void saveUserData(const char* firstName, const char* lastName, const char* schoo
     }
 }
 
-bool checkExistingAccount(const char* schoolID, const char* password)
+bool checkExistingAccount(const char* username, const char* password)
 {
     std::ifstream file("users.txt");
     std::string line;
 
     while (std::getline(file, line)) {
-        if (line.find("Student ID: " + std::string(schoolID)) != std::string::npos) {
+        if (line.find("Username: " + std::string(username)) != std::string::npos) {
             std::getline(file, line);
             return line.find("Password: " + std::string(password)) != std::string::npos;
         }
@@ -198,7 +198,7 @@ User currentUser;
 void RegisterForm()
 {
     int key = 0;
-    activeBox = SCHOOL_ID;
+    activeBox = USERNAME;
 
     while (!WindowShouldClose())
     {
@@ -237,16 +237,16 @@ void RegisterForm()
             }
         }
 
-        if (isMouseOverBox(registrationForm.idBox.box))
+        if (isMouseOverBox(registrationForm.usernameBox.box))
         {
-            activeBox = SCHOOL_ID;
+            activeBox = USERNAME;
             while (key > 0)
             {
-                if ((key >= 32) && (key <= 125) && (registrationForm.idBox.charCount < 15))
+                if ((key >= 32) && (key <= 125) && (registrationForm.usernameBox.charCount < 15))
                 {
-                    registrationForm.idBox.input[registrationForm.idBox.charCount] = (char)key;
-                    registrationForm.idBox.input[registrationForm.idBox.charCount + 1] = '\0';
-                    registrationForm.idBox.charCount++;
+                    registrationForm.usernameBox.input[registrationForm.usernameBox.charCount] = (char)key;
+                    registrationForm.usernameBox.input[registrationForm.usernameBox.charCount + 1] = '\0';
+                    registrationForm.usernameBox.charCount++;
                 }
                 key = GetCharPressed();
             }
@@ -311,7 +311,7 @@ void RegisterForm()
         DrawText("Register", GetScreenWidth() / 2 - MeasureText("Register", 30) / 2, 50, 30, BLACK);
         drawTextBox(registrationForm.firstNameBox, "First Name:", true);
         drawTextBox(registrationForm.lastNameBox, "Last Name:", true);
-        drawTextBox(registrationForm.idBox, "Student ID:", true);
+        drawTextBox(registrationForm.usernameBox, "Username:", true);
         drawTextBox(registrationForm.passwordBox, "Password:", false);
         drawTextBox(registrationForm.confirmPasswordBox, "Confirm Password:", false);
 
@@ -333,10 +333,10 @@ void RegisterForm()
                     registrationForm.lastNameBox.charCount--;
                 }
                 break;
-            case SCHOOL_ID:
-                if (registrationForm.idBox.charCount > 0) {
-                    registrationForm.idBox.input[registrationForm.idBox.charCount - 1] = '\0';
-                    registrationForm.idBox.charCount--;
+            case USERNAME:
+                if (registrationForm.usernameBox.charCount > 0) {
+                    registrationForm.usernameBox.input[registrationForm.usernameBox.charCount - 1] = '\0';
+                    registrationForm.usernameBox.charCount--;
                 }
                 break;
             case PASSWORD:
@@ -372,17 +372,17 @@ void RegisterForm()
 
                 if (strlen(registrationForm.firstNameBox.input) > 0 && strlen(registrationForm.lastNameBox.input) > 0) {
 
-                    saveUserData(registrationForm.firstNameBox.input, registrationForm.lastNameBox.input, registrationForm.idBox.input, registrationForm.passwordBox.input, registrationForm.items.input);
+                    saveUserData(registrationForm.firstNameBox.input, registrationForm.lastNameBox.input, registrationForm.usernameBox.input, registrationForm.passwordBox.input, registrationForm.items.input);
 
                     registrationForm.firstNameBox.charCount = 0;
                     registrationForm.lastNameBox.charCount = 0;
-                    registrationForm.idBox.charCount = 0;
+                    registrationForm.usernameBox.charCount = 0;
                     registrationForm.passwordBox.charCount = 0;
                     registrationForm.confirmPasswordBox.charCount = 0;
 
                     memset(registrationForm.firstNameBox.input, 0, sizeof(registrationForm.firstNameBox.input));
                     memset(registrationForm.lastNameBox.input, 0, sizeof(registrationForm.lastNameBox.input));
-                    memset(registrationForm.idBox.input, 0, sizeof(registrationForm.idBox.input));
+                    memset(registrationForm.usernameBox.input, 0, sizeof(registrationForm.usernameBox.input));
                     memset(registrationForm.passwordBox.input, 0, sizeof(registrationForm.passwordBox.input));
                     memset(registrationForm.confirmPasswordBox.input, 0, sizeof(registrationForm.confirmPasswordBox.input));
 
@@ -400,11 +400,11 @@ void RegisterForm()
             {
                 const char* firstName = "";
                 const char* lastName = "";
-                const char* studentID = "";
+                const char* USERNAME = "";
                 const char* password = "";
                 std::string items = "";
 
-                saveUserData(firstName, lastName, studentID, password, items);
+                saveUserData(firstName, lastName, USERNAME, password, items);
                 //draw student 
             }
         }
@@ -416,24 +416,24 @@ void RegisterForm()
 void DrawMainMenu()
 {
     int key = 0;
-    activeBox = SCHOOL_ID;
+    activeBox = USERNAME;
 
     while (!WindowShouldClose())
     {
         key = GetCharPressed();
 
-        if (isMouseOverBox(mainMenu.idBox.box))
+        if (isMouseOverBox(mainMenu.usernameBox.box))
         {
             activeBox = FIRST_NAME;
             while (key > 0)
             {
 
-                if ((key >= 32) && (key <= 125) && (mainMenu.idBox.charCount < 15))
+                if ((key >= 32) && (key <= 125) && (mainMenu.usernameBox.charCount < 15))
                 {
 
-                    mainMenu.idBox.input[mainMenu.idBox.charCount] = (char)key;
-                    mainMenu.idBox.input[mainMenu.idBox.charCount + 1] = '\0';
-                    mainMenu.idBox.charCount++;
+                    mainMenu.usernameBox.input[mainMenu.usernameBox.charCount] = (char)key;
+                    mainMenu.usernameBox.input[mainMenu.usernameBox.charCount + 1] = '\0';
+                    mainMenu.usernameBox.charCount++;
 
                 }
                 key = GetCharPressed();
@@ -462,9 +462,9 @@ void DrawMainMenu()
 
         DrawText("Digital Academix", GetScreenWidth() / 2 - MeasureText("Digital Academix", 60) / 2, 50, 60, BLUE);
 
-        if (isMouseOverBox(mainMenu.idBox.box))
+        if (isMouseOverBox(mainMenu.usernameBox.box))
         {
-            activeBox = SCHOOL_ID;
+            activeBox = USERNAME;
         }
         else if (isMouseOverBox(mainMenu.passwordBox.box))
         {
@@ -473,10 +473,10 @@ void DrawMainMenu()
 
         if (IsKeyPressed(KEY_BACKSPACE)) {
             switch (activeBox) {
-            case SCHOOL_ID:
-                if (registrationForm.idBox.charCount > 0) {
-                    registrationForm.idBox.input[registrationForm.idBox.charCount - 1] = '\0';
-                    registrationForm.idBox.charCount--;
+            case USERNAME:
+                if (registrationForm.usernameBox.charCount > 0) {
+                    registrationForm.usernameBox.input[registrationForm.usernameBox.charCount - 1] = '\0';
+                    registrationForm.usernameBox.charCount--;
                 }
                 break;
             case PASSWORD:
@@ -488,12 +488,12 @@ void DrawMainMenu()
             }
         }
 
-        mainMenu.idBox.box.x = GetScreenWidth() / 2 - mainMenu.idBox.box.width / 2;
-        mainMenu.idBox.box.y = GetScreenHeight() / 2 - 60;
+        mainMenu.usernameBox.box.x = GetScreenWidth() / 2 - mainMenu.usernameBox.box.width / 2;
+        mainMenu.usernameBox.box.y = GetScreenHeight() / 2 - 60;
         mainMenu.passwordBox.box.x = GetScreenWidth() / 2 - mainMenu.passwordBox.box.width / 2;
         mainMenu.passwordBox.box.y = GetScreenHeight() / 2;
 
-        drawTextBox(mainMenu.idBox, "Student ID:", true);
+        drawTextBox(mainMenu.usernameBox, "Username:", true);
         drawTextBox(mainMenu.passwordBox, "Password:", false);
 
         mainMenu.continueButton.x = GetScreenWidth() / 2 - mainMenu.continueButton.width / 2;
@@ -520,16 +520,23 @@ void DrawMainMenu()
             DrawText("Log in", mainMenu.continueButton.x + 60, mainMenu.continueButton.y + 10, 20, WHITE);
             if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
             {
-                const char* studentID = "";
+                const char* username = "";
                 const char* password = "";
 
-                if (checkExistingAccount(studentID, password))
+                if (checkExistingAccount(username, password))
                 {
-                    //Display Student Menu
+                    if (selectedItem == 0)
+                    {
+                        //Student menu
+                    }
+                    else if (selectedItem == 1)
+                    {
+                        //teacher menu
+                    }
                 }
                 else
                 {
-                    std::cout << "Invalid Student ID or password. Please try again." << std::endl;
+                    std::cout << "Invalid Username or password. Please try again." << std::endl;
                 }
             }
         }
