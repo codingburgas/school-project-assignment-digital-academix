@@ -446,6 +446,127 @@ void biologyTest() {
 
 }
 
+
+void geographyTest() {
+    // Initialization
+    const int screenWidth = 800;
+    const int screenHeight = 600;
+    typedef struct {
+        char question[256];
+        char answers[4][50];
+        int correctAnswer;
+    } Question;
+
+    Question questions[10] = {
+        {"What's correct about Bulgaria's geography?", {"East-west distance: 330 km", "Stable natural features", "Economic grow after 2007", "No significant processes"}, 0},
+        {"Match geography with processes:", {"Struma Valley - Weathering", "Rusenski Lom - Seismic", "Ice Cave Canyon - Erosion", "Vitosha Mountain - Karst"}, 0},
+        {"Which climate region is typical for Plovdiv?", {"Continental-Mediterranean", "Moderate-continental", "Transitional-continental", "Black Sea"}, 2},
+        {"Which river is NOT located in Northern Bulgaria?", {"Danube", "Iskar", "Maritsa", "Struma"}, 2},
+        {"What do Aleppo, Arkutino, and Pomorie Lake have in common?", {"Mountain peaks", "Coastal cities", "Major rivers", "Northern Bulgaria location"}, 3},
+        {"What's incorrect about Bulgaria's nature?", {"Soil formed Quaternary", "Endemics like Rhodope", "Humus-carbonate soils", "Vegetation belts"}, 3},
+        {"Match ancient cities with modern", {"Kabile - Sofia", "Pulpudeva - Plovdiv", "Skaptopara - Varna", "Astika - Burgas)"}, 1},
+        {"What process forms the Struma Valley", {"Weathering and denudation", "Intense seismic activity", "Erosion", "Karst formations"}, 2},
+        {"Analyze the changes between 1965 and 1985?", {"Birth rate decreased", "Birth rate increased", "Birth rates remains same", "Birth rate is unstable"}, 0},
+        {"What influences population size", {"Emigration", "Immigration", "Birth rate", "All of the above"}, 3},
+    };
+
+    int currentPage = 0;
+    int selectedAnswer[10] = { 0 }; // Selected answer for each question
+
+    bool quizFinished = false;
+
+    while (!WindowShouldClose()) {
+        // Update
+        if (!quizFinished) {
+            // TODO: Implement logic for handling input and updating selected answers
+        }
+
+        // Draw
+        BeginDrawing();
+
+        ClearBackground(GOLD);
+
+        if (!quizFinished) {
+            // Draw questions for current page
+            int y = 30;
+            for (int i = currentPage * 2; i < (currentPage + 1) * 2 && i < 10; i++) {
+                DrawText(questions[i].question, 100, y, 20, BLACK);
+
+                // Draw answer options as clickable rectangles
+                for (int j = 0; j < 4; j++) {
+                    Rectangle answerRect = { 270, y + 60 + 50 * j, 300, 40 };
+                    bool answerHovered = CheckCollisionPointRec(GetMousePosition(), answerRect);
+
+                    // Change color if answer is selected or hovered
+                    if (selectedAnswer[i] == j || answerHovered) {
+                        DrawRectangleRec(answerRect, answerHovered ? DARKBLUE : DARKBLUE);
+                    }
+                    else {
+                        DrawRectangleRec(answerRect, BLUE);
+                    }
+
+                    DrawText(questions[i].answers[j], answerRect.x + 5, answerRect.y + 8, 20, WHITE);
+
+                    // Check if an answer option is clicked
+                    if (answerHovered && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                        selectedAnswer[i] = j;
+                    }
+                }
+
+                y += 270;
+            }
+
+            // Draw "Next Page" button
+            if ((currentPage + 1) * 2 < 10) {
+                Rectangle nextPageRec = { screenWidth - 150, screenHeight - 50, 120, 40 };
+                bool nextPageHovered = CheckCollisionPointRec(GetMousePosition(), nextPageRec);
+
+                DrawRectangleRec(nextPageRec, nextPageHovered ? DARKBLUE : BLUE);
+                DrawText("Next Page", nextPageRec.x + 5, nextPageRec.y + 8, 20, WHITE);
+
+                // Check if "Next Page" button is clicked
+                if (nextPageHovered && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                    currentPage++;
+                    // Deselect all answers on page change
+                    for (int i = currentPage * 2; i < (currentPage + 1) * 2 && i < 10; i++) {
+                        selectedAnswer[i] = 0;
+                    }
+                }
+            }
+
+            // Draw "Finish" button
+            else {
+                Rectangle finishRec = { screenWidth - 150, screenHeight - 50, 120, 40 };
+                bool finishHovered = CheckCollisionPointRec(GetMousePosition(), finishRec);
+
+                DrawRectangleRec(finishRec, finishHovered ? DARKBLUE : BLUE);
+                DrawText("Finish", finishRec.x + 25, finishRec.y + 8, 20, WHITE);
+
+                // Check if "Finish" button is clicked
+                if (finishHovered && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                    quizFinished = true;
+                }
+            }
+        }
+        else {
+            int score = 0;
+            for (int i = 0; i < 10; i++) {
+                if (selectedAnswer[i] == questions[i].correctAnswer) {
+                    score++;
+                }
+            }
+            char scoreText[30];
+            sprintf_s(scoreText, "Your Score: %d/%d", score, 10);
+            DrawText(scoreText, 100, 100, 30, BLACK);
+        }
+
+        EndDrawing();
+    }
+
+    CloseWindow();
+
+}
+
 void studentMenu()
 {
     std::cout << "mazna";
@@ -831,7 +952,7 @@ int main()
 
         ClearBackground(LIGHTGRAY);
         //DrawMainMenu();
-        biologyTest();
+        geographyTest();
     }
 }
 
