@@ -567,6 +567,127 @@ void geographyTest() {
 
 }
 
+
+void physicsTest() {
+    // Initialization
+    const int screenWidth = 800;
+    const int screenHeight = 600;
+    typedef struct {
+        char question[256];
+        char answers[4][50];
+        int correctAnswer;
+    } Question;
+
+    Question questions[10] = {
+        {"The acceleration vector is always aligned with the vector of", {"Velocity", "Radius vector", "Displacement", "Change in velocity"}, 1},
+        {"The trajectory of an object moving under inertia is:", {"Circle", "Parabola", "Straight line", "Arbitrary curved line"}, 2},
+        {"The second law of mechanics is only applicable in", {"Non-inertial reference", "Inertial reference", "If the forces are constant", "In all reference frames"}, 1},
+        {"Light enter the geometrical shadow of objects when passing\nthrough narrow openings and around obstacles?", {"Dispersion", "Diffraction", "Divergence", "Divergence"}, 1},
+        {"What is the refractive index of diamond, in which yellow light\npropagates at a speed u = 2c/5", {"0.5", "1.5", "2.5", "3.5"}, 3},
+        {"What is a magnitude of a body with a mass of 10 kg moves with\nacceleration under the action of two forces of 20 N and 21 N.", {"1.9", " 2.9", "3.9", "4.9"}, 1},
+        {"Which characteristic does not apply to the photon?", {"Exists only at rest", "Proportional to frequency", "Moves at the speed of light", "Exists only in motion)"}, 0},
+        {"What particles are absorbed by bodies in the photoelectric effect?", {"Ions", "Photons", "Electrons", "Neutrons"}, 2},
+        {"Planck, atoms emit electromagnetic energy:", {"Continuously", "Arbitrarily", "Randomly", "in portions"}, 3},
+        {"The emission spectrum of a rarefied molecular gas is:", {"Linear", "Line-like", "Continuous", "Molecular gases do not emit"}, 1},
+    };
+
+    int currentPage = 0;
+    int selectedAnswer[10] = { 0 }; // Selected answer for each question
+
+    bool quizFinished = false;
+
+    while (!WindowShouldClose()) {
+        // Update
+        if (!quizFinished) {
+            // TODO: Implement logic for handling input and updating selected answers
+        }
+
+        // Draw
+        BeginDrawing();
+
+        ClearBackground(GOLD);
+
+        if (!quizFinished) {
+            // Draw questions for current page
+            int y = 30;
+            for (int i = currentPage * 2; i < (currentPage + 1) * 2 && i < 10; i++) {
+                DrawText(questions[i].question, 100, y, 20, BLACK);
+
+                // Draw answer options as clickable rectangles
+                for (int j = 0; j < 4; j++) {
+                    Rectangle answerRect = { 270, y + 60 + 50 * j, 300, 40 };
+                    bool answerHovered = CheckCollisionPointRec(GetMousePosition(), answerRect);
+
+                    // Change color if answer is selected or hovered
+                    if (selectedAnswer[i] == j || answerHovered) {
+                        DrawRectangleRec(answerRect, answerHovered ? DARKBLUE : DARKBLUE);
+                    }
+                    else {
+                        DrawRectangleRec(answerRect, BLUE);
+                    }
+
+                    DrawText(questions[i].answers[j], answerRect.x + 5, answerRect.y + 8, 20, WHITE);
+
+                    // Check if an answer option is clicked
+                    if (answerHovered && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                        selectedAnswer[i] = j;
+                    }
+                }
+
+                y += 270;
+            }
+
+            // Draw "Next Page" button
+            if ((currentPage + 1) * 2 < 10) {
+                Rectangle nextPageRec = { screenWidth - 150, screenHeight - 50, 120, 40 };
+                bool nextPageHovered = CheckCollisionPointRec(GetMousePosition(), nextPageRec);
+
+                DrawRectangleRec(nextPageRec, nextPageHovered ? DARKBLUE : BLUE);
+                DrawText("Next Page", nextPageRec.x + 5, nextPageRec.y + 8, 20, WHITE);
+
+                // Check if "Next Page" button is clicked
+                if (nextPageHovered && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                    currentPage++;
+                    // Deselect all answers on page change
+                    for (int i = currentPage * 2; i < (currentPage + 1) * 2 && i < 10; i++) {
+                        selectedAnswer[i] = 0;
+                    }
+                }
+            }
+
+            // Draw "Finish" button
+            else {
+                Rectangle finishRec = { screenWidth - 150, screenHeight - 50, 120, 40 };
+                bool finishHovered = CheckCollisionPointRec(GetMousePosition(), finishRec);
+
+                DrawRectangleRec(finishRec, finishHovered ? DARKBLUE : BLUE);
+                DrawText("Finish", finishRec.x + 25, finishRec.y + 8, 20, WHITE);
+
+                // Check if "Finish" button is clicked
+                if (finishHovered && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                    quizFinished = true;
+                }
+            }
+        }
+        else {
+            int score = 0;
+            for (int i = 0; i < 10; i++) {
+                if (selectedAnswer[i] == questions[i].correctAnswer) {
+                    score++;
+                }
+            }
+            char scoreText[30];
+            sprintf_s(scoreText, "Your Score: %d/%d", score, 10);
+            DrawText(scoreText, 100, 100, 30, BLACK);
+        }
+
+        EndDrawing();
+    }
+
+    CloseWindow();
+
+}
+
 void studentMenu()
 {
     std::cout << "mazna";
@@ -952,7 +1073,7 @@ int main()
 
         ClearBackground(LIGHTGRAY);
         //DrawMainMenu();
-        geographyTest();
+        physicsTest();
     }
 }
 
