@@ -808,6 +808,126 @@ void chemistryTest() {
 
 }
 
+void englishTest() {
+    // Initialization
+    const int screenWidth = 800;
+    const int screenHeight = 600;
+    typedef struct {
+        char question[256];
+        char answers[4][50];
+        int correctAnswer;
+    } Question;
+
+    Question questions[10] = {
+        {"If I ___ (know) you were coming, I would have baked a cake.", {"know", "knew", "have known", "would know"}, 1},
+        {"This book is ___ than the one I read last week.", {"good", "better", "best", "more good"}, 1},
+        {"What is the meaning of the phrasal verb to call off?", {"to make a phone call", "to cancel something", "to initiate a meeting", "to start an argument"}, 1},
+        {"If he ___ (study) harder, he would have passed the exam.", {"studies", "studied", "has studied", "studying"}, 1},
+        {"The concert was so ___ that the audience gave a standing ovation.", {"enchanting", "mundane", "captivating", "monotonous"}, 2},
+        {"She is ___ than she was last year.", {"more confident", "confident", "confidenter", "confidencer"}, 0},
+        {"I wish I ___ (know) the answer to that question.", {"know", "known", "knew", "knowing)"}, 2},
+        {"The novel was so ___ that I couldn't put it down", {"mundane", "riveting", "disinterested", "tedious"}, 1},
+        {"This assignment is ___ than the last one", {"difficult", "more difficult", "difficultly", "difficultier"}, 1},
+        {"If he ___ (know) about the meeting, he would have attended.", {"knows", "knew", "know", "known"}, 1},
+    };
+
+    int currentPage = 0;
+    int selectedAnswer[10] = { 0 }; // Selected answer for each question
+
+    bool quizFinished = false;
+
+    while (!WindowShouldClose()) {
+        // Update
+        if (!quizFinished) {
+            // TODO: Implement logic for handling input and updating selected answers
+        }
+
+        // Draw
+        BeginDrawing();
+
+        ClearBackground(GOLD);
+
+        if (!quizFinished) {
+            // Draw questions for current page
+            int y = 30;
+            for (int i = currentPage * 2; i < (currentPage + 1) * 2 && i < 10; i++) {
+                DrawText(questions[i].question, 100, y, 20, BLACK);
+
+                // Draw answer options as clickable rectangles
+                for (int j = 0; j < 4; j++) {
+                    Rectangle answerRect = { 270, y + 60 + 50 * j, 300, 40 };
+                    bool answerHovered = CheckCollisionPointRec(GetMousePosition(), answerRect);
+
+                    // Change color if answer is selected or hovered
+                    if (selectedAnswer[i] == j || answerHovered) {
+                        DrawRectangleRec(answerRect, answerHovered ? DARKBLUE : DARKBLUE);
+                    }
+                    else {
+                        DrawRectangleRec(answerRect, BLUE);
+                    }
+
+                    DrawText(questions[i].answers[j], answerRect.x + 5, answerRect.y + 8, 20, WHITE);
+
+                    // Check if an answer option is clicked
+                    if (answerHovered && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                        selectedAnswer[i] = j;
+                    }
+                }
+
+                y += 270;
+            }
+
+            // Draw "Next Page" button
+            if ((currentPage + 1) * 2 < 10) {
+                Rectangle nextPageRec = { screenWidth - 150, screenHeight - 50, 120, 40 };
+                bool nextPageHovered = CheckCollisionPointRec(GetMousePosition(), nextPageRec);
+
+                DrawRectangleRec(nextPageRec, nextPageHovered ? DARKBLUE : BLUE);
+                DrawText("Next Page", nextPageRec.x + 5, nextPageRec.y + 8, 20, WHITE);
+
+                // Check if "Next Page" button is clicked
+                if (nextPageHovered && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                    currentPage++;
+                    // Deselect all answers on page change
+                    for (int i = currentPage * 2; i < (currentPage + 1) * 2 && i < 10; i++) {
+                        selectedAnswer[i] = 0;
+                    }
+                }
+            }
+
+            // Draw "Finish" button
+            else {
+                Rectangle finishRec = { screenWidth - 150, screenHeight - 50, 120, 40 };
+                bool finishHovered = CheckCollisionPointRec(GetMousePosition(), finishRec);
+
+                DrawRectangleRec(finishRec, finishHovered ? DARKBLUE : BLUE);
+                DrawText("Finish", finishRec.x + 25, finishRec.y + 8, 20, WHITE);
+
+                // Check if "Finish" button is clicked
+                if (finishHovered && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                    quizFinished = true;
+                }
+            }
+        }
+        else {
+            int score = 0;
+            for (int i = 0; i < 10; i++) {
+                if (selectedAnswer[i] == questions[i].correctAnswer) {
+                    score++;
+                }
+            }
+            char scoreText[30];
+            sprintf_s(scoreText, "Your Score: %d/%d", score, 10);
+            DrawText(scoreText, 100, 100, 30, BLACK);
+        }
+
+        EndDrawing();
+    }
+
+    CloseWindow();
+
+}
+
 void historyTest() {
     // Initialization
     const int screenWidth = 800;
