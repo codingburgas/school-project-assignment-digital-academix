@@ -14,10 +14,12 @@
 🟥 <a href="https://github.com/SDRadev21"> Stefan Radev</a> [ BackEnd Developer] <br>
 🟥 <a href="https://github.com/EYGrebennikov21"> Egor Grebennikov</a> [ BackEnd Developer] <br>
 </b>
+<hr>
 <br>
 <h1>💻 About</h1>
 <br>
 <b><p align="center">This repository contains our project on the 2024 digital school project. Our application is a digital platform where students can exercise and receive grades.</p></b>
+<hr>
 <br>
 <h1><div align = "left">🖥️Used technologies</div></h1>
 <h3><div align = "left">🧑‍💻Used code editor & collaborative service:</div></h3>
@@ -41,3 +43,33 @@
 [<img src="https://camo.githubusercontent.com/a1f0ecc4db636e4472398b25b57161940363d76ef8dcb082bf43fb9538ab2204/68747470733a2f2f696d672e69636f6e73382e636f6d2f636f6c6f722f3334342f6d732d706f776572706f696e742e706e67" alt="MS PowerPoint logo" width="48px" >](https://www.microsoft.com/en-us/microsoft-365/powerpoint)
 [<img src="https://camo.githubusercontent.com/9fb2758060fa878ac03e512f6db5c48da09fffe9b4ad7979bd3c8a0b9fefdab0/68747470733a2f2f696d672e69636f6e73382e636f6d2f636f6c6f722f3334342f6d6963726f736f66742d7465616d732e706e67" alt="MS Teams logo" width="46px">](https://www.microsoft.com/bg-bg/microsoft-teams/log-in)
 
+<hr>
+<br>
+
+
+<h1>📄Documents</h1>
+
+<a href="">QA Documentation </a>
+
+<a href="">Documentation </a>
+
+<a href="">Presentation </a>
+
+<a href="">Test Plan </a>
+
+<hr>
+<br>
+
+<h1><div align = "left">📩How to install</div></h1>
+To install our project you need to clone it. This can be done in CMD:
+<pre>https://github.com/codingburgas/school-project-assignment-digital-academix.git</pre>
+
+Open it in VS Code and type in the terminal:
+<pre>npm install</pre>
+
+finally type:
+<pre>npm run dev</pre>
+
+<hr>
+
+<h1 align = "center">Thanks for visiting our repo. Please consider giving us a ⭐!</h1>
