@@ -208,8 +208,6 @@ void mathTest() {
     // Initialization
     const int screenWidth = 800;
     const int screenHeight = 600;
-
-    InitWindow(screenWidth, screenHeight, "Math Test");
     typedef struct {
         char question[256];
         char answers[4][50];
@@ -260,6 +258,127 @@ void mathTest() {
                     // Change color if answer is selected or hovered
                     if (selectedAnswer[i] == j || answerHovered) {
                         DrawRectangleRec(answerRect, answerHovered ? DARKBLUE : BLUE);
+                    }
+                    else {
+                        DrawRectangleRec(answerRect, BLUE);
+                    }
+
+                    DrawText(questions[i].answers[j], answerRect.x + 5, answerRect.y + 8, 20, WHITE);
+
+                    // Check if an answer option is clicked
+                    if (answerHovered && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                        selectedAnswer[i] = j;
+                    }
+                }
+
+                y += 270;
+            }
+
+            // Draw "Next Page" button
+            if ((currentPage + 1) * 2 < 10) {
+                Rectangle nextPageRec = { screenWidth - 150, screenHeight - 50, 120, 40 };
+                bool nextPageHovered = CheckCollisionPointRec(GetMousePosition(), nextPageRec);
+
+                DrawRectangleRec(nextPageRec, nextPageHovered ? DARKBLUE : BLUE);
+                DrawText("Next Page", nextPageRec.x + 5, nextPageRec.y + 8, 20, WHITE);
+
+                // Check if "Next Page" button is clicked
+                if (nextPageHovered && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                    currentPage++;
+                    // Deselect all answers on page change
+                    for (int i = currentPage * 2; i < (currentPage + 1) * 2 && i < 10; i++) {
+                        selectedAnswer[i] = 0;
+                    }
+                }
+            }
+
+            // Draw "Finish" button
+            else {
+                Rectangle finishRec = { screenWidth - 150, screenHeight - 50, 120, 40 };
+                bool finishHovered = CheckCollisionPointRec(GetMousePosition(), finishRec);
+
+                DrawRectangleRec(finishRec, finishHovered ? DARKBLUE : DARKBLUE);
+                DrawText("Finish", finishRec.x + 25, finishRec.y + 8, 20, WHITE);
+
+                // Check if "Finish" button is clicked
+                if (finishHovered && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                    quizFinished = true;
+                }
+            }
+        }
+        else {
+            int score = 0;
+            for (int i = 0; i < 10; i++) {
+                if (selectedAnswer[i] == questions[i].correctAnswer) {
+                    score++;
+                }
+            }
+            char scoreText[30];
+            sprintf_s(scoreText, "Your Score: %d/%d", score, 10);
+            DrawText(scoreText, 100, 100, 30, BLACK);
+        }
+
+        EndDrawing();
+    }
+
+    CloseWindow();
+
+}
+
+
+void biologyTest() {
+    // Initialization
+    const int screenWidth = 800;
+    const int screenHeight = 600;
+    typedef struct {
+        char question[256];
+        char answers[4][50];
+        int correctAnswer;
+    } Question;
+
+    Question questions[10] = {
+        {"How many traits are traced in a dihybrid cross?", {"1", "3", "2", "more than three"}, 2},
+        {"Orgenesis is the process of forming:", {"sperm cells", "egg cells", "both sperm and egg cells", "none of the above"}, 1},
+        {"Which of these are genetic disorders in humans", {"Down syndrome", "Cystic fibrosis", "Influenza", "Hypertension"}, 0},
+        {"Microevolution leads to:", {"emergence of new species", "formation of super-species", "continuous change", "extinction"}, 2},
+        {"The ecological niche refers to:", {"physical space an organism", "its role in the ecosystem", "its genetic makeup", "its reproductive habits"}, 1},
+        {"Cata-morphosis examples include:", {"the evolution of flight", "sight in cave-dwelling", "changes in mating behavior", "development plant structure"}, 1},
+        {"Dominant traits are represented by:", {"capital letters", "lowercase letters", "italicized letters", "bold letters)"}, 0},
+        {"Probability of a child using the left hand with Dd and dd is:", {"25%", "50%", "75%", "100%"}, 0},
+        {"What determines handedness in humans?", {"Dominant genetic factors", "Environmental influences", "Cultural practices", "Random chance"}, 0},
+        {"What influences population size", {"Emigration", "Immigration", "Birth rate", "All of the above"}, 3},
+    };
+
+    int currentPage = 0;
+    int selectedAnswer[10] = { 0 }; // Selected answer for each question
+
+    bool quizFinished = false;
+
+    while (!WindowShouldClose()) {
+        // Update
+        if (!quizFinished) {
+            // TODO: Implement logic for handling input and updating selected answers
+        }
+
+        // Draw
+        BeginDrawing();
+
+        ClearBackground(GOLD);
+
+        if (!quizFinished) {
+            // Draw questions for current page
+            int y = 30;
+            for (int i = currentPage * 2; i < (currentPage + 1) * 2 && i < 10; i++) {
+                DrawText(questions[i].question, 100, y, 20, BLACK);
+
+                // Draw answer options as clickable rectangles
+                for (int j = 0; j < 4; j++) {
+                    Rectangle answerRect = { 270, y + 60 + 50 * j, 300, 40 };
+                    bool answerHovered = CheckCollisionPointRec(GetMousePosition(), answerRect);
+
+                    // Change color if answer is selected or hovered
+                    if (selectedAnswer[i] == j || answerHovered) {
+                        DrawRectangleRec(answerRect, answerHovered ? DARKBLUE : DARKBLUE);
                     }
                     else {
                         DrawRectangleRec(answerRect, BLUE);
@@ -711,7 +830,8 @@ int main()
         BeginDrawing();
 
         ClearBackground(LIGHTGRAY);
-        DrawMainMenu();
+        //DrawMainMenu();
+        biologyTest();
     }
 }
 
