@@ -3,6 +3,7 @@
 #include <fstream>
 #include <iostream>
 
+
 class CREDENTIAL_BOX
 {
 public:
@@ -168,26 +169,167 @@ private:
 };
 
 
-bool checkAccount(const char* username, const char* password)
-{
+bool checkAccount(const char* username, const char* password) {
     std::ifstream file("users.txt");
-    std::string line;
+    if (!file.is_open()) {
+        std::cerr << "Error: Unable to open file 'users.txt'" << std::endl;
+        return false;
+    }
 
-    while(true)
-    {
+    std::string line;
+    while (std::getline(file, line)) {
         if (line.find("Username: " + std::string(username)) != std::string::npos) {
-            std::getline(file, line);
-            return line.find("Password: " + std::string(password)) != std::string::npos;
+            if (std::getline(file, line)) {
+                if (line.find("Password: " + std::string(password)) != std::string::npos) {
+                    file.close(); // Close the file before returning
+                    return true;
+                }
+                else {
+                    continue;
+                }
+            }
+            else {
+                std::cerr << "Error: Unexpected end of file while reading password" << std::endl;
+                file.close(); // Close the file before returning
+                return false;
+            }
         }
     }
 
+    std::cerr << "Error: Username '" << username << "' not found" << std::endl;
+    file.close(); // Close the file before returning
     return false;
 }
 
 userSaver currentUser;
 
+
+void mathTest() {
+    // Initialization
+    const int screenWidth = 800;
+    const int screenHeight = 600;
+
+    InitWindow(screenWidth, screenHeight, "Math Test");
+    typedef struct {
+        char question[256];
+        char answers[4][50];
+        int correctAnswer;
+    } Question;
+
+    // Array of questions
+    Question questions[10] = {
+        {"What is the solution to the system of equations:\n2x + 3y = 7\n4x - 5y = -2?", {"(1, 2)", "(2, 1)", "(3, 2)", "(2, 3)"}, 0},
+        {"What is the sum of the roots of the biquadratic equation:\nx^4 - 5x^2 + 4 = 0?", {"-2", "-1", "1", "2"}, 1},
+        {"What is the solution to the system of inequalities:\n2x - y > 3\n3x + y < 6?", {"(1, 4)", "(2, 3)", "(3, 2)", "(4, 1)"}, 0},
+        {"What is the value of 'a' in the biquadratic inequality:\n(a - 1)(a + 2)(a - 3)(a + 4) > 0?", {"a < -4 or -2 < a < 1 or a > 3", "a < -4 or -2 < a < 3 or a > 1", "a < -4 or -1 < a < 3 or a > 2", "a < -3 or -1 < a < 2 or a > 4"}, 1},
+        {"What is the solution to the system of equations:\n3x - 2y = 1\n4x + 3y = 7?", {"(1, 1)", "(2, 2)", "(3, 3)", "(4, 4)"}, 0},
+        {"What are the roots of the biquadratic equation:\n2x^4 - 8x^2 + 6 = 0?", {"{3, -3}", "{2, -2}", "{2, -3}", "{3, -2}"}, 0},
+        {"What is the solution to the system of inequalities:\n3x + 2y < 5\n2x - y > 1?", {"(1, 1)", "(2, 2)", "(3, 3)", "(4, 4)"}, 0},
+        {"What is the value of 'a' in the biquadratic inequality:\n(a - 2)(a + 1)(a - 4)(a + 3) < 0?", {"-3 < a < -1 or 2 < a < 4", "-4 < a < -2 or 1 < a < 3", "-3 < a < -1 or 1 < a < 3", "-4 < a < -2 or 2 < a < 4"}, 2},
+        {"What is the solution to the system of equations:\nx + y = 6\n2x - y = 2?", {"(2, 4)", "(3, 3)", "(4, 2)", "(5, 1)"}, 1},
+        {"What is the solution to the biquadratic equation:\nx^4 - 10x^2 + 9 = 0?", {"{3, -3}", "{2, -2}", "{3, -2}", "{2, -3}"}, 2},
+    };
+
+    int currentPage = 0;
+    int selectedAnswer[10] = { 0 }; // Selected answer for each question
+
+    bool quizFinished = false;
+
+    while (!WindowShouldClose()) {
+        // Update
+        if (!quizFinished) {
+            // TODO: Implement logic for handling input and updating selected answers
+        }
+
+        // Draw
+        BeginDrawing();
+
+        ClearBackground(GOLD);
+
+        if (!quizFinished) {
+            // Draw questions for current page
+            int y = 30;
+            for (int i = currentPage * 2; i < (currentPage + 1) * 2 && i < 10; i++) {
+                DrawText(questions[i].question, 100, y, 20, BLACK);
+
+                // Draw answer options as clickable rectangles
+                for (int j = 0; j < 4; j++) {
+                    Rectangle answerRect = { 270, y + 60 + 50 * j, 300, 40 };
+                    bool answerHovered = CheckCollisionPointRec(GetMousePosition(), answerRect);
+
+                    // Change color if answer is selected or hovered
+                    if (selectedAnswer[i] == j || answerHovered) {
+                        DrawRectangleRec(answerRect, answerHovered ? DARKBLUE : BLUE);
+                    }
+                    else {
+                        DrawRectangleRec(answerRect, BLUE);
+                    }
+
+                    DrawText(questions[i].answers[j], answerRect.x + 5, answerRect.y + 8, 20, WHITE);
+
+                    // Check if an answer option is clicked
+                    if (answerHovered && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                        selectedAnswer[i] = j;
+                    }
+                }
+
+                y += 270;
+            }
+
+            // Draw "Next Page" button
+            if ((currentPage + 1) * 2 < 10) {
+                Rectangle nextPageRec = { screenWidth - 150, screenHeight - 50, 120, 40 };
+                bool nextPageHovered = CheckCollisionPointRec(GetMousePosition(), nextPageRec);
+
+                DrawRectangleRec(nextPageRec, nextPageHovered ? DARKBLUE : BLUE);
+                DrawText("Next Page", nextPageRec.x + 5, nextPageRec.y + 8, 20, WHITE);
+
+                // Check if "Next Page" button is clicked
+                if (nextPageHovered && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                    currentPage++;
+                    // Deselect all answers on page change
+                    for (int i = currentPage * 2; i < (currentPage + 1) * 2 && i < 10; i++) {
+                        selectedAnswer[i] = 0;
+                    }
+                }
+            }
+
+            // Draw "Finish" button
+            else {
+                Rectangle finishRec = { screenWidth - 150, screenHeight - 50, 120, 40 };
+                bool finishHovered = CheckCollisionPointRec(GetMousePosition(), finishRec);
+
+                DrawRectangleRec(finishRec, finishHovered ? DARKBLUE : BLUE);
+                DrawText("Finish", finishRec.x + 25, finishRec.y + 8, 20, WHITE);
+
+                // Check if "Finish" button is clicked
+                if (finishHovered && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                    quizFinished = true;
+                }
+            }
+        }
+        else {
+            int score = 0;
+            for (int i = 0; i < 10; i++) {
+                if (selectedAnswer[i] == questions[i].correctAnswer) {
+                    score++;
+                }
+            }
+            char scoreText[30];
+            sprintf_s(scoreText, "Your Score: %d/%d", score, 10);
+            DrawText(scoreText, 100, 100, 30, BLACK);
+        }
+
+        EndDrawing();
+    }
+
+    CloseWindow();
+
+}
+
 void studentMenu()
 {
+    std::cout << "mazna";
     std::string fName = currentUser.firstName;
     std::string lName = currentUser.lastName;
     while (!WindowShouldClose())
@@ -196,6 +338,7 @@ void studentMenu()
         ClearBackground(WHITE);
         DrawText("Hello", 20, 20, 50, BLACK);
         EndDrawing();
+        std::cout << "mazn";
     }
     
 }
@@ -288,8 +431,8 @@ void RegisterForm()
         }
 
         BeginDrawing();
-        ClearBackground(WHITE);
-        DrawRectangleRec(dropdownRect, WHITE);
+        ClearBackground(GOLD);
+        DrawRectangleRec(dropdownRect, GOLD);
         DrawRectangleLines(dropdownRect.x, dropdownRect.y, dropdownRect.width, dropdownRect.height, BLACK);
 
         if (selectedItem != -1) {
@@ -299,7 +442,7 @@ void RegisterForm()
         if (dropdownActive) {
             for (int i = 0; i < 2; i++) {
                 Rectangle itemRect = { dropdownRect.x, dropdownRect.y + dropdownRect.height + 2 + 30 * i, dropdownRect.width, 30 };
-                DrawRectangleRec(itemRect, WHITE);
+                DrawRectangleRec(itemRect, GOLD);
                 DrawRectangleLines(itemRect.x, itemRect.y, itemRect.width, itemRect.height, BLACK);
                 DrawText(items[i], itemRect.x + 10, itemRect.y + 8, 20, BLACK);
 
@@ -410,7 +553,8 @@ void RegisterForm()
                 std::string items = "";
 
                 currentUser.saveUserData(firstName, lastName, USERNAME, password, items);
-                //draw student 
+                studentMenu();
+                std::cout << "mazna69";
             }
         }
 
@@ -463,7 +607,7 @@ void DrawMainMenu()
             }
         }
         BeginDrawing();
-        ClearBackground(RAYWHITE);
+        ClearBackground(GOLD);
 
         DrawText("Digital Academix", GetScreenWidth() / 2 - MeasureText("Digital Academix", 60) / 2, 50, 60, BLUE);
 
@@ -570,4 +714,7 @@ int main()
         DrawMainMenu();
     }
 }
+
+
+
 
