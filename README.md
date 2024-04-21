@@ -2,7 +2,7 @@
 <h1 align="center">Team Digital Academix</h1>
 
 <p align="center">
-    <img src ="logo"/>
+  <img width="750" height="300" src="https://github.com/codingburgas/school-project-assignment-digital-academix/assets/107104764/50293385-ed3c-4f34-b679-b90e14e1a28c">
 </p>
 
 <h1>🧒 Our Team</h1>
