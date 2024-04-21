@@ -688,6 +688,125 @@ void physicsTest() {
 
 }
 
+void chemistryTest() {
+    // Initialization
+    const int screenWidth = 800;
+    const int screenHeight = 600;
+    typedef struct {
+        char question[256];
+        char answers[4][50];
+        int correctAnswer;
+    } Question;
+
+    Question questions[10] = {
+        {"What is the relative mass and charge of neutrons?", {"Ar = 1 and charge +2", "Ar = 1 and charge 0", "Ar = 1 and charge -1", "Ar = 2 and charge +1"}, 1},
+        {"What is the maximum number of electrons in the M-shell?", {"18", "10", "32", "16"}, 0},
+        {"What is the reason for the periodic change in the properties\nof the elements?", {"Number of neutrons", "Atomic mass", "Proton charge", "Layered of electron shell"}, 1},
+        {"What type of bonds exist between atoms in elemental sulfur?", {"pi bonds", "Covalent nonpolar", "Ionic", "Covalent nonpolar"}, 1},
+        {"What is the difference between a sulfur atom and a sulfur ion?", {"number of electrons", "the number of protons", "the number of neutrons", "There is no difference"}, 0},
+        {"How many states of matter do substances have?", {"5", "4", "No correct answer", "3"}, 3},
+        {"Which chemical elements constitute Group VA in the periodic table?", {"Bi, Sb, As, P, N", "N, O, As, Sb, B", "N, O, P, As, Sb", "N, P, As, Pb, Se"}, 3},
+        {"Which hydrocarbon is obtained by the synthesis of Wurtz\nfrom 1-bromopropane?", {"Hexane", "Pentane", "Butane", "Heptane"}, 0},
+        {"Butanol has how many structural isomers?", {"5", "2", "4", "6"}, 1},
+        {"Ethanal is obtained by hydration of", {"Ethanol", "Bromoethane", "Ethane", "Ethene"}, 3},
+    };
+
+    int currentPage = 0;
+    int selectedAnswer[10] = { 0 }; // Selected answer for each question
+
+    bool quizFinished = false;
+
+    while (!WindowShouldClose()) {
+        // Update
+        if (!quizFinished) {
+            // TODO: Implement logic for handling input and updating selected answers
+        }
+
+        // Draw
+        BeginDrawing();
+
+        ClearBackground(GOLD);
+
+        if (!quizFinished) {
+            // Draw questions for current page
+            int y = 30;
+            for (int i = currentPage * 2; i < (currentPage + 1) * 2 && i < 10; i++) {
+                DrawText(questions[i].question, 100, y, 20, BLACK);
+
+                // Draw answer options as clickable rectangles
+                for (int j = 0; j < 4; j++) {
+                    Rectangle answerRect = { 270, y + 60 + 50 * j, 300, 40 };
+                    bool answerHovered = CheckCollisionPointRec(GetMousePosition(), answerRect);
+
+                    // Change color if answer is selected or hovered
+                    if (selectedAnswer[i] == j || answerHovered) {
+                        DrawRectangleRec(answerRect, answerHovered ? DARKBLUE : DARKBLUE);
+                    }
+                    else {
+                        DrawRectangleRec(answerRect, BLUE);
+                    }
+
+                    DrawText(questions[i].answers[j], answerRect.x + 5, answerRect.y + 8, 20, WHITE);
+
+                    // Check if an answer option is clicked
+                    if (answerHovered && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                        selectedAnswer[i] = j;
+                    }
+                }
+
+                y += 270;
+            }
+
+            // Draw "Next Page" button
+            if ((currentPage + 1) * 2 < 10) {
+                Rectangle nextPageRec = { screenWidth - 150, screenHeight - 50, 120, 40 };
+                bool nextPageHovered = CheckCollisionPointRec(GetMousePosition(), nextPageRec);
+
+                DrawRectangleRec(nextPageRec, nextPageHovered ? DARKBLUE : BLUE);
+                DrawText("Next Page", nextPageRec.x + 5, nextPageRec.y + 8, 20, WHITE);
+
+                // Check if "Next Page" button is clicked
+                if (nextPageHovered && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                    currentPage++;
+                    // Deselect all answers on page change
+                    for (int i = currentPage * 2; i < (currentPage + 1) * 2 && i < 10; i++) {
+                        selectedAnswer[i] = 0;
+                    }
+                }
+            }
+
+            // Draw "Finish" button
+            else {
+                Rectangle finishRec = { screenWidth - 150, screenHeight - 50, 120, 40 };
+                bool finishHovered = CheckCollisionPointRec(GetMousePosition(), finishRec);
+
+                DrawRectangleRec(finishRec, finishHovered ? DARKBLUE : BLUE);
+                DrawText("Finish", finishRec.x + 25, finishRec.y + 8, 20, WHITE);
+
+                // Check if "Finish" button is clicked
+                if (finishHovered && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                    quizFinished = true;
+                }
+            }
+        }
+        else {
+            int score = 0;
+            for (int i = 0; i < 10; i++) {
+                if (selectedAnswer[i] == questions[i].correctAnswer) {
+                    score++;
+                }
+            }
+            char scoreText[30];
+            sprintf_s(scoreText, "Your Score: %d/%d", score, 10);
+            DrawText(scoreText, 100, 100, 30, BLACK);
+        }
+
+        EndDrawing();
+    }
+
+    CloseWindow();
+
+}
 
 void historyTest() {
     // Initialization
