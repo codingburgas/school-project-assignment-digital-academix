@@ -204,6 +204,8 @@ bool checkAccount(const char* username, const char* password) {
 userSaver currentUser;
 
 
+void studentMenu();
+
 void mathTest() {
     // Initialization
     const int screenWidth = 800;
@@ -235,9 +237,9 @@ void mathTest() {
 
     while (!WindowShouldClose()) {
         // Update
-        if (!quizFinished) {
-            // TODO: Implement logic for handling input and updating selected answers
-        }
+        /*if (quizFinished) {
+            studentMenu();
+        }*/
 
         // Draw
         BeginDrawing();
@@ -257,7 +259,7 @@ void mathTest() {
 
                     // Change color if answer is selected or hovered
                     if (selectedAnswer[i] == j || answerHovered) {
-                        DrawRectangleRec(answerRect, answerHovered ? DARKBLUE : BLUE);
+                        DrawRectangleRec(answerRect, answerHovered ? DARKBLUE : DARKBLUE);
                     }
                     else {
                         DrawRectangleRec(answerRect, BLUE);
@@ -316,6 +318,15 @@ void mathTest() {
             char scoreText[30];
             sprintf_s(scoreText, "Your Score: %d/%d", score, 10);
             DrawText(scoreText, 100, 100, 30, BLACK);
+
+            Rectangle backButtonRect = { (GetScreenWidth() + 190) / 2, GetScreenHeight() - 70 , 200, 50 };
+            bool backButtonHovered = CheckCollisionPointRec(GetMousePosition(), backButtonRect);
+            DrawRectangleRec(backButtonRect, backButtonHovered ? DARKBLUE : BLUE);
+            DrawText("Back to Menu", backButtonRect.x + backButtonRect.width / 2 - MeasureText("Back to Menu", 20) / 2, backButtonRect.y + backButtonRect.height / 2 - 10, 20, WHITE);
+            if (backButtonHovered && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                studentMenu();
+                
+            }
         }
 
         EndDrawing();
@@ -356,9 +367,9 @@ void biologyTest() {
 
     while (!WindowShouldClose()) {
         // Update
-        if (!quizFinished) {
-            // TODO: Implement logic for handling input and updating selected answers
-        }
+        /*if (quizFinished) {
+            studentMenu();
+        }*/
 
         // Draw
         BeginDrawing();
@@ -437,6 +448,15 @@ void biologyTest() {
             char scoreText[30];
             sprintf_s(scoreText, "Your Score: %d/%d", score, 10);
             DrawText(scoreText, 100, 100, 30, BLACK);
+
+            Rectangle backButtonRect = { (GetScreenWidth() + 190) / 2, GetScreenHeight() - 70 , 200, 50 };
+            bool backButtonHovered = CheckCollisionPointRec(GetMousePosition(), backButtonRect);
+            DrawRectangleRec(backButtonRect, backButtonHovered ? DARKBLUE : BLUE);
+            DrawText("Back to Menu", backButtonRect.x + backButtonRect.width / 2 - MeasureText("Back to Menu", 20) / 2, backButtonRect.y + backButtonRect.height / 2 - 10, 20, WHITE);
+            if (backButtonHovered && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                studentMenu();
+
+            }
         }
 
         EndDrawing();
@@ -477,9 +497,9 @@ void geographyTest() {
 
     while (!WindowShouldClose()) {
         // Update
-        if (!quizFinished) {
-            // TODO: Implement logic for handling input and updating selected answers
-        }
+        /*if (quizFinished) {
+            studentMenu();
+        }*/
 
         // Draw
         BeginDrawing();
@@ -558,6 +578,14 @@ void geographyTest() {
             char scoreText[30];
             sprintf_s(scoreText, "Your Score: %d/%d", score, 10);
             DrawText(scoreText, 100, 100, 30, BLACK);
+            Rectangle backButtonRect = { (GetScreenWidth() + 190) / 2, GetScreenHeight() - 70 , 200, 50 };
+            bool backButtonHovered = CheckCollisionPointRec(GetMousePosition(), backButtonRect);
+            DrawRectangleRec(backButtonRect, backButtonHovered ? DARKBLUE : BLUE);
+            DrawText("Back to Menu", backButtonRect.x + backButtonRect.width / 2 - MeasureText("Back to Menu", 20) / 2, backButtonRect.y + backButtonRect.height / 2 - 10, 20, WHITE);
+            if (backButtonHovered && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                studentMenu();
+
+            }
         }
 
         EndDrawing();
@@ -598,9 +626,9 @@ void physicsTest() {
 
     while (!WindowShouldClose()) {
         // Update
-        if (!quizFinished) {
-            // TODO: Implement logic for handling input and updating selected answers
-        }
+        /*if (quizFinished) {
+            studentMenu();
+        }*/
 
         // Draw
         BeginDrawing();
@@ -679,6 +707,15 @@ void physicsTest() {
             char scoreText[30];
             sprintf_s(scoreText, "Your Score: %d/%d", score, 10);
             DrawText(scoreText, 100, 100, 30, BLACK);
+
+            Rectangle backButtonRect = { (GetScreenWidth() + 190) / 2, GetScreenHeight() - 70 , 200, 50 };
+            bool backButtonHovered = CheckCollisionPointRec(GetMousePosition(), backButtonRect);
+            DrawRectangleRec(backButtonRect, backButtonHovered ? DARKBLUE : BLUE);
+            DrawText("Back to Menu", backButtonRect.x + backButtonRect.width / 2 - MeasureText("Back to Menu", 20) / 2, backButtonRect.y + backButtonRect.height / 2 - 10, 20, WHITE);
+            if (backButtonHovered && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                studentMenu();
+
+            }
         }
 
         EndDrawing();
@@ -718,9 +755,9 @@ void chemistryTest() {
 
     while (!WindowShouldClose()) {
         // Update
-        if (!quizFinished) {
-            // TODO: Implement logic for handling input and updating selected answers
-        }
+        /*if (quizFinished) {
+            studentMenu();
+        }*/
 
         // Draw
         BeginDrawing();
@@ -799,6 +836,15 @@ void chemistryTest() {
             char scoreText[30];
             sprintf_s(scoreText, "Your Score: %d/%d", score, 10);
             DrawText(scoreText, 100, 100, 30, BLACK);
+
+            Rectangle backButtonRect = { (GetScreenWidth() + 190) / 2, GetScreenHeight() - 70 , 200, 50 };
+            bool backButtonHovered = CheckCollisionPointRec(GetMousePosition(), backButtonRect);
+            DrawRectangleRec(backButtonRect, backButtonHovered ? DARKBLUE : BLUE);
+            DrawText("Back to Menu", backButtonRect.x + backButtonRect.width / 2 - MeasureText("Back to Menu", 20) / 2, backButtonRect.y + backButtonRect.height / 2 - 10, 20, WHITE);
+            if (backButtonHovered && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                studentMenu();
+
+            }
         }
 
         EndDrawing();
@@ -838,9 +884,9 @@ void englishTest() {
 
     while (!WindowShouldClose()) {
         // Update
-        if (!quizFinished) {
-            // TODO: Implement logic for handling input and updating selected answers
-        }
+        /*if (quizFinished) {
+            studentMenu();
+        }*/
 
         // Draw
         BeginDrawing();
@@ -919,6 +965,15 @@ void englishTest() {
             char scoreText[30];
             sprintf_s(scoreText, "Your Score: %d/%d", score, 10);
             DrawText(scoreText, 100, 100, 30, BLACK);
+
+            Rectangle backButtonRect = { (GetScreenWidth() + 190) / 2, GetScreenHeight() - 70 , 200, 50 };
+            bool backButtonHovered = CheckCollisionPointRec(GetMousePosition(), backButtonRect);
+            DrawRectangleRec(backButtonRect, backButtonHovered ? DARKBLUE : BLUE);
+            DrawText("Back to Menu", backButtonRect.x + backButtonRect.width / 2 - MeasureText("Back to Menu", 20) / 2, backButtonRect.y + backButtonRect.height / 2 - 10, 20, WHITE);
+            if (backButtonHovered && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                studentMenu();
+
+            }
         }
 
         EndDrawing();
@@ -958,9 +1013,9 @@ void historyTest() {
 
     while (!WindowShouldClose()) {
         // Update
-        if (!quizFinished) {
-            // TODO: Implement logic for handling input and updating selected answers
-        }
+        /*if (quizFinished) {
+            studentMenu();
+        }*/
 
         // Draw
         BeginDrawing();
@@ -1039,6 +1094,15 @@ void historyTest() {
             char scoreText[30];
             sprintf_s(scoreText, "Your Score: %d/%d", score, 10);
             DrawText(scoreText, 100, 100, 30, BLACK);
+
+            Rectangle backButtonRect = { (GetScreenWidth() + 190) / 2, GetScreenHeight() - 70 , 200, 50 };
+            bool backButtonHovered = CheckCollisionPointRec(GetMousePosition(), backButtonRect);
+            DrawRectangleRec(backButtonRect, backButtonHovered ? DARKBLUE : BLUE);
+            DrawText("Back to Menu", backButtonRect.x + backButtonRect.width / 2 - MeasureText("Back to Menu", 20) / 2, backButtonRect.y + backButtonRect.height / 2 - 10, 20, WHITE);
+            if (backButtonHovered && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                studentMenu();
+
+            }
         }
 
         EndDrawing();
@@ -1050,20 +1114,79 @@ void historyTest() {
 
 
 
+typedef struct {
+    char subject[20];
+    int grade;
+    bool completed;
+} Test;
+
 
 void studentMenu()
 {
-    std::cout << "mazna";
-    std::string fName = currentUser.firstName;
-    std::string lName = currentUser.lastName;
-    while (!WindowShouldClose())
-    {
+
+    Test tests[] = {
+        {"Math", 0, false},
+        {"English", 0, false},
+        {"Biology", 0, false},
+        {"Physics", 0, false},
+        {"Chemistry", 0, false},
+        {"History", 0, false},
+        {"Geography", 0, false}
+    };
+    int grade;
+
+    while (!WindowShouldClose()) {
         BeginDrawing();
-        ClearBackground(WHITE);
-        DrawText("Hello", 20, 20, 50, BLACK);
+
+        ClearBackground(GOLD);
+
+        // Draw test options
+        int y = 150;
+        for (int i = 0; i < sizeof(tests) / sizeof(tests[0]); i++) {
+            Rectangle testRect = { 320, y, 200, 50 }; 
+            bool testHovered = CheckCollisionPointRec(GetMousePosition(), testRect);
+
+            DrawRectangleRec(testRect, testHovered ? DARKBLUE : BLUE);
+            DrawText(tests[i].subject, testRect.x + 65, testRect.y + 10, 20, WHITE);
+
+            if (testHovered && IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && i < sizeof(tests) / sizeof(tests[0])) 
+            {
+                if (strcmp(tests[i].subject, "Math") == 0) {
+                    mathTest();
+                }
+                else if (strcmp(tests[i].subject, "English") == 0) {
+                    englishTest();
+                }
+                else if (strcmp(tests[i].subject, "Biology") == 0) {
+                    biologyTest();
+                }
+                else if (strcmp(tests[i].subject, "Physics") == 0) {
+                    physicsTest();
+                }
+                else if (strcmp(tests[i].subject, "Chemistry") == 0) {
+                    chemistryTest();
+                }
+                else if (strcmp(tests[i].subject, "History") == 0) {
+                    historyTest();
+                }
+                else if (strcmp(tests[i].subject, "Geography") == 0) {
+                    geographyTest();
+                }
+
+
+                if (strcmp(tests[i].subject, "Math") == 0) {
+                    // Assign the grade to the corresponding test
+                }
+                tests[i].completed = true;
+            }
+
+            y += 60;
+        }
+
         EndDrawing();
-        std::cout << "mazn";
     }
+
+    CloseWindow();
     
 }
 
@@ -1435,8 +1558,8 @@ int main()
         BeginDrawing();
 
         ClearBackground(LIGHTGRAY);
-        //DrawMainMenu();
-        historyTest();
+        studentMenu();
+        
     }
 }
 
