@@ -1123,6 +1123,7 @@ typedef struct {
 
 void studentMenu()
 {
+    
 
     Test tests[] = {
         {"Math", 0, false},
@@ -1139,11 +1140,20 @@ void studentMenu()
         BeginDrawing();
 
         ClearBackground(GOLD);
-
+        DrawText("Here are some tests to exercise", 170, 20, 30, BLACK);
         // Draw test options
-        int y = 150;
+        float y = 150;
         for (int i = 0; i < sizeof(tests) / sizeof(tests[0]); i++) {
-            Rectangle testRect = { 320, y, 200, 50 }; 
+            
+            Rectangle testRect;
+            if (i % 2 == 0) {
+                // Place rectangles on the left side
+                testRect = { 120, y, 200, 50 };
+            }
+            else {
+                // Place rectangles on the right side
+                testRect = { 480, y, 200, 50 };
+            }
             bool testHovered = CheckCollisionPointRec(GetMousePosition(), testRect);
 
             DrawRectangleRec(testRect, testHovered ? DARKBLUE : BLUE);
@@ -1401,7 +1411,6 @@ void RegisterForm()
 
                 currentUser.saveUserData(firstName, lastName, USERNAME, password, items);
                 studentMenu();
-                std::cout << "mazna69";
             }
         }
 
@@ -1558,7 +1567,7 @@ int main()
         BeginDrawing();
 
         ClearBackground(LIGHTGRAY);
-        studentMenu();
+        DrawMainMenu();
         
     }
 }
