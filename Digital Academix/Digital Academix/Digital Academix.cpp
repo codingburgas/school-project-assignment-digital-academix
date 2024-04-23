@@ -3,7 +3,7 @@
 #include <fstream>
 #include <iostream>
 
-
+// Define a class for credential input box
 class CREDENTIAL_BOX
 {
 public:
@@ -12,7 +12,7 @@ public:
     Rectangle box;
     int framesCounter;
 };
-
+// Define a class for the main menu
 class MAIN_MENU
 {
 public:
@@ -21,12 +21,12 @@ public:
     Rectangle continueButton;
     Rectangle createAccountButton;
 };
-
+// Define a class for user details
 class User {
 public:
     std::string Username;
 };
-
+// Define a class for registration form
 class REGISTRATION_FORM
 {
 public:
@@ -38,14 +38,14 @@ public:
     CREDENTIAL_BOX items{ "", 0, {700, 380, 200, 30}, 0 };
     Rectangle registerButton{ 700, 700, 200, 40 };
 };
-
+// Define global input boxes and buttons
 CREDENTIAL_BOX firstNameBox{ "", 0, {GetScreenWidth() / 2 + 300, 140, 200, 30}, 0 };
 CREDENTIAL_BOX lastNameBox{ "", 0, {GetScreenWidth() / 2 + 300, 200, 200, 30}, 0 };
 CREDENTIAL_BOX usernameBox{ "", 0, {GetScreenWidth() / 2 + 300, 260, 200, 30}, 0 };
 CREDENTIAL_BOX passwordBox{ "", 0, {GetScreenWidth() / 2 + 300, 320, 200, 30}, 0 };
 CREDENTIAL_BOX confirmPasswordBox{ "", 0, {GetScreenWidth() / 2 + 300, 380, 200, 30}, 0 };
 Rectangle registerButton{ GetScreenWidth() / 2 + 300, 100, 200, 40 };
-
+// Enum to track active input box
 enum ActiveBox {
     FIRST_NAME,
     LAST_NAME,
@@ -53,9 +53,10 @@ enum ActiveBox {
     PASSWORD,
     CONFIRM_PASSWORD
 };
-
+// Active input box
 ActiveBox activeBox = USERNAME;
-bool registrationFormActive = false;
+bool registrationFormActive = false; // Flag to indicate registration form activation
+// Define main menu components
 
 MAIN_MENU mainMenu = {
     { "", 0, {GetScreenWidth() / 2 + 310, GetScreenHeight() / 2 + 240, 200, 30}, 0 },
@@ -63,6 +64,7 @@ MAIN_MENU mainMenu = {
     { GetScreenWidth() / 2 + 310, GetScreenHeight() / 2 + 400, 200, 40 },
     { GetScreenWidth() / 2 + 310, GetScreenHeight() / 2 + 450, 200, 40 }
 };
+// Define registration form components
 
 REGISTRATION_FORM registrationForm =
 {
@@ -73,17 +75,17 @@ REGISTRATION_FORM registrationForm =
     { "", 0, {GetScreenWidth() / 2 + 300, 380, 200, 30}, 0 },
     { GetScreenWidth() / 2 + 500, 700, 200, 40 }
 };
-
+// Rectangle for dropdown menu
 Rectangle dropdownRect = { 300, 430, 200, 30 };
 int selectedItem = -1;
 const char* items[2] = { "Student", "Teacher" };
 bool dropdownActive = false;
-
+// Function to check if mouse is over a box
 bool isMouseOverBox(Rectangle box)
 {
     return CheckCollisionPointRec(GetMousePosition(), box);
 }
-
+// Function to draw a text box
 void drawTextBox(CREDENTIAL_BOX& textBox, const char* label, bool showCharacters)
 {
     DrawText(label, (int)textBox.box.x, (int)textBox.box.y - 19, 20, BLACK);
@@ -112,7 +114,7 @@ void drawTextBox(CREDENTIAL_BOX& textBox, const char* label, bool showCharacters
     }
 }
 
-
+// Function to check password requirements
 bool checkRequirements(const char* str) {
     bool hasCapital = false;
     bool hasLower = false;
@@ -139,6 +141,8 @@ bool checkRequirements(const char* str) {
 
     return hasCapital && hasLower && hasDigit && hasSpecial && (strlen(str) >= 6);
 }
+// Class for saving user data
+
 class userSaver {
 public:
 
@@ -168,6 +172,7 @@ private:
     std::string items;
 };
 
+// Function to check account credentials
 
 bool checkAccount(const char* username, const char* password) {
     std::ifstream file("users.txt");
@@ -203,6 +208,7 @@ bool checkAccount(const char* username, const char* password) {
 
 userSaver currentUser;
 
+// Function to handle student menu
 
 void studentMenu();
 
@@ -985,7 +991,7 @@ void englishTest() {
 
 void historyTest() {
     // Initialization
-    const int screenWidth = 800;
+    const int screenWidth = 0;
     const int screenHeight = 600;
     typedef struct {
         char question[256];
