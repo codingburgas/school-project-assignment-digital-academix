@@ -12,7 +12,7 @@
 🟩 <a href="https://github.com/EEMustafa21"> Enis Mustafa</a> [ BackEnd Developer] <br>
 🟥 <a href="https://github.com/NSZhelyazkov21">  Nikola Zhelyazkov</a> [ BackEnd Developer] <br>
 🟥 <a href="https://github.com/SDRadev21"> Stefan Radev</a> [ BackEnd Developer] <br>
-🟥 <a href="https://github.com/EYGrebennikov21"> Egor Grebennikov</a> [ BackEnd Developer] <br>
+🟥 <a href="https://github.com/EYGrebennikov21"> Egor Grebennikov</a> [ QA Developer] <br>
 </b>
 <hr>
 <br>
