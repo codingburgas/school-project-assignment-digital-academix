@@ -991,7 +991,7 @@ void englishTest() {
 
 void historyTest() {
     // Initialization
-    const int screenWidth = 0;
+    const int screenWidth = 800;
     const int screenHeight = 600;
     typedef struct {
         char question[256];
