@@ -1119,18 +1119,18 @@ void historyTest() {
 }
 
 
-
+// Structure to hold test information
 typedef struct {
     char subject[20];
     int grade;
     bool completed;
 } Test;
 
-
+// Function to display the student menu and handle test selection
 void studentMenu()
 {
     
-
+    // Array of available tests
     Test tests[] = {
         {"Math", 0, false},
         {"English", 0, false},
@@ -1205,7 +1205,7 @@ void studentMenu()
     CloseWindow();
     
 }
-
+// Function to handle user registration
 void RegisterForm()
 {
     int key = 0;
@@ -1423,7 +1423,7 @@ void RegisterForm()
         EndDrawing();
     }
 }
-
+// Function to draw the main menu and handle user login
 void DrawMainMenu()
 {
     int key = 0;
